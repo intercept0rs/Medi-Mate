@@ -1,0 +1,8 @@
+{
+  "name": "Copy of Copy of Copy of MediMate",
+  "description": "A healthcare management and caretaker–family communication system. It provides medicine and appointment tracking, an AI health assistant, and an emergency alert system, with multi-language support.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
