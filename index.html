@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medi-Mate: Connected Care</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        /* Header and Navigation */
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 30px;
+            position: relative;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .hamburger span {
+            display: block;
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background: #fff;
+            border-radius: 3px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 0px;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 10px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 20px;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            top: 10px;
+            transform: rotate(135deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+            left: -30px;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            top: 10px;
+            transform: rotate(-135deg);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 80px 30px 30px;
+            transition: right 0.5s ease;
+            z-index: 50;
+            border-left: 1px solid #333;
+        }
+
+        nav.active {
+            right: 0;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-bottom: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        nav ul li a:hover {
+            color: #aaa;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            color: #ddd;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 80px;
+            padding: 40px;
+            background-color: rgba(20, 20, 20, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #fff;
+            margin: 10px auto;
+        }
+
+        /* Problem Section */
+        .problem-stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            border-left: 4px solid #fff;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-text {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        /* User Pain Points */
+        .user-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .user-card {
+            background-color: #111;
+            padding: 25px;
+            border-radius: 8px;
+            border-top: 4px solid #fff;
+        }
+
+        .user-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .user-card p {
+            color: #ccc;
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background-color: #111;
+            padding: 25px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .feature-card ul {
+            list-style-type: none;
+        }
+
+        .feature-card li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .feature-card li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #fff;
+        }
+
+        /* Roadmap */
+        .roadmap {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .roadmap-phase {
+            background-color: #111;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #fff;
+        }
+
+        .roadmap-phase h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .roadmap-phase ul {
+            list-style-type: none;
+        }
+
+        .roadmap-phase li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .roadmap-phase li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #fff;
+        }
+
+        /* Team Section */
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .member {
+            width: 200px;
+            text-align: center;
+            background-color: #111;
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            border: 3px solid #fff;
+        }
+
+        .member h4 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .member p {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .member-role {
+            color: #6a11cb;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #111;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+            border-top: 1px solid #333;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #aaa;
+        }
+
+        .copyright {
+            color: #777;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .quote {
+            font-style: italic;
+            margin: 30px auto;
+            max-width: 800px;
+            font-size: 1.2rem;
+            padding: 20px;
+            border-left: 3px solid #fff;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            nav {
+                width: 100%;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .hero {
+                padding: 60px 20px;
+            }
+            
+            .team-members {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .member {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Medi-Mate</div>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav id="nav">
+            <ul>
+                <li><a href="#problem">The Problem</a></li>
+                <li><a href="#users">Target Users</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#impact">Impact</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#team">Our Team</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section class="hero">
+            <h1>Medi-Mate: Connected Care</h1>
+            <p>Revolutionizing elder care in India with an offline-first, voice-enabled medication management platform that connects elders, caretakers, and families.</p>
+            <div>
+                <a href="#features" class="btn">Explore Features</a>
+                <a href="#impact" class="btn btn-outline">View Impact</a>
+            </div>
+        </section>
+
+        <section id="problem" class="section">
+            <h2 class="section-title">The Problem We're Solving</h2>
+            <p style="text-align: center; margin-bottom: 30px; font-size: 1.2rem;">70% of Indian elders miss or delay medicines regularly. Care is fragmented: elders forget, caretakers stressed, families anxious. Existing apps fail India → no offline-first, no local language, no SOS.</p>
+            
+            <div class="problem-stats">
+                <div class="stat">
+                    <div class="stat-number">70%</div>
+                    <div class="stat-text">of Indian elders miss medications</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">65%</div>
+                    <div class="stat-text">of hospital visits are preventable</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">41%</div>
+                    <div class="stat-text">of India's elderly are mobile-ready</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="users" class="section">
+            <h2 class="section-title">Target Users & Pain Points</h2>
+            <p style="text-align: center; margin-bottom: 30px; font-size: 1.2rem;">The pain points demand a connected solution.</p>
+            
+            <div class="user-points">
+                <div class="user-card">
+                    <h3>Elders (70%)</h3>
+                    <p>Forget meds, fear emergencies, tech struggle.</p>
+                </div>
+                <div class="user-card">
+                    <h3>Caretakers (60%)</h3>
+                    <p>Overloaded, no structured accountability.</p>
+                </div>
+                <div class="user-card">
+                    <h3>Families (65%)</h3>
+                    <p>Constant worry, no real-time updates.</p>
+                </div>
+                <div class="user-card">
+                    <h3>Doctors (30-40%)</h3>
+                    <p>Need clean adherence & vitals data.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="section">
+            <h2 class="section-title">Feature Overview</h2>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>💊 Medication & Health</h3>
+                    <ul>
+                        <li>Smart med reminders & low stock alerts</li>
+                        <li>Weekly adherence/vitals chart</li>
+                        <li>AI health reading & quick assistance</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>👵 Elder-Friendly Design</h3>
+                    <ul>
+                        <li>Voice notifications in regional languages</li>
+                        <li>Simple UI with large buttons</li>
+                        <li>Dark/light mode for comfort</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>👥 Caretaker & Family</h3>
+                    <ul>
+                        <li>Caretaker task lists + confirmations</li>
+                        <li>Family chat & real-time notifications</li>
+                        <li>SOS alerts & care concern reporting</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>🚀 Extra Innovations</h3>
+                    <ul>
+                        <li>Auto CSV health reports</li>
+                        <li>Smart retry reminders with escalation</li>
+                        <li>Geo-tagged caretaker check-ins</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="section">
+            <h2 class="section-title">How It Works</h2>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Smart Reminders</h3>
+                    <ul>
+                        <li>Voice + visual alerts in local languages</li>
+                        <li>Simple confirm: "Taken / Missed"</li>
+                        <li>Weekly adherence chart auto-updated</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Connected Care</h3>
+                    <ul>
+                        <li>Caretaker sees instant updates</li>
+                        <li>Family gets real-time notifications</li>
+                        <li>Auto CSV health reports shared weekly</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Safety First</h3>
+                    <ul>
+                        <li>One-tap SOS button</li>
+                        <li>Alerts caretaker + family instantly</li>
+                        <li>Emergency auto-call option to saved contacts</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact" class="section">
+            <h2 class="section-title">Impact</h2>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <h3>Elders</h3>
+                    <p>Voice-based reminders in their own language, higher medication adherence → fewer emergencies, peace of mind.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Caretakers</h3>
+                    <p>Organized daily task lists, less chance of missing or double-dosing, clear communication with family → reduced blame/stress.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Families</h3>
+                    <p>Instant updates if medicine is missed, weekly reports → better visibility, reduced anxiety.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Doctors</h3>
+                    <p>Accurate weekly logs of meds & vitals, saves time, supports better, data-driven treatment decisions.</p>
+                </div>
+            </div>
+            
+            <div class="quote">
+                "Medi-Mate isn't just about taking medicines on time — it's about giving elders dignity, families peace, and India a healthier future."
+            </div>
+        </section>
+
+        <section id="roadmap" class="section">
+            <h2 class="section-title">Roadmap</h2>
+            
+            <div class="roadmap">
+                <div class="roadmap-phase">
+                    <h3>Near Term (0-3 months)</h3>
+                    <ul>
+                        <li>MVP launch → voice reminders, SOS, family alerts</li>
+                        <li>Offline-first + multi-language basics</li>
+                    </ul>
+                </div>
+                <div class="roadmap-phase">
+                    <h3>Mid Term (3-9 months)</h3>
+                    <ul>
+                        <li>Expand to 8+ Indian languages</li>
+                        <li>AI insights for meds & vitals</li>
+                        <li>Smarter alerts & escalation</li>
+                    </ul>
+                </div>
+                <div class="roadmap-phase">
+                    <h3>Future (9+ months)</h3>
+                    <ul>
+                        <li>Child nutrition & vaccination module</li>
+                        <li>IoT pillbox integration</li>
+                        <li>Doctor/hospital dashboards</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="section">
+            <h2 class="section-title">Our Team</h2>
+            <p style="text-align: center; margin-bottom: 30px; font-size: 1.2rem;">INTERCEPTORS | SJCET</p>
+            
+            <div class="team-members">
+                <div class="member">
+                    <div class="member-icon">GS</div>
+                    <h4>Gouri Sankar A</h4>
+                    
+                    
+                </div>
+                <div class="member">
+                    <div class="member-icon">JG</div>
+                    <h4>Jeevan George</h4>
+                    
+                </div>
+                <div class="member">
+                    <div class="member-icon">MS</div>
+                    <h4>Melwin Santhosh</h4>
+                </div>
+                <div class="member">
+                    <div class="member-icon">NJ</div>
+                    <h4>Nirmal Josekutty</h4>
+                    
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Medi-Mate</div>
+            <div class="footer-links">
+                <a href="#problem">The Problem</a>
+                <a href="#users">Target Users</a>
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#impact">Impact</a>
+                <a href="#roadmap">Roadmap</a>
+            </div>
+            <p class="copyright">© 2025 Medi-Mate by INTERCEPTORS | SJCET. Connected Care for India's Elders.</p>
+        </div>
+    </footer>
+
+    <!-- Particle.js Library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // Initialize particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Hamburger Menu Toggle
+        document.getElementById('hamburger').addEventListener('click', function() {
+            this.classList.toggle('open');
+            document.getElementById('nav').classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('hamburger').classList.remove('open');
+                document.getElementById('nav').classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
